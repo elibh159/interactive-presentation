@@ -45,11 +45,10 @@ io.on("connection", (socket) => {
     try {
       const { id: sessionId, title } = await getSessionByCode(loginCode);
 
-      socket.join([`session_${sessionId}`, `presenter_${sessionId}`]);
+      socket.join(`session_${sessionId}`);
+      socket.join(`presenter_${sessionId}`);
 
-      const attendeesCount = io.sockets.adapter.rooms.get(
-        `attendee_${sessionId}`
-      ).size;
+      const attendeesCount = await getUserAttendeeCount(sessionId);
 
       io.to(`presenter_${sessionId}`).emit("attendeesCount", attendeesCount);
 
