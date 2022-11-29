@@ -39,8 +39,33 @@ function getSessionId(socket) {
   }
   return undefined;
 }
-
+const randomPrice = () => (Math.floor(Math.random() * 10000));
 io.on("connection", (socket) => {
+  socket.on("startTrading", () => {
+    setInterval(() => {
+      const currentDate = Date.now();
+
+      let data = [
+        {
+          name: "dolor",
+          price: randomPrice(),
+          dateinfo: currentDate,
+        },
+        {
+          name: "euro",
+          price: randomPrice(),
+          dateinfo: currentDate
+        },
+        {
+          name: "pound",
+          price: randomPrice(),
+          dateinfo: currentDate
+        }];
+       //debugger;
+      io.emit("lastingPrice", data);
+    }, 3000);
+
+  })
   socket.on("start", async ({ loginCode }) => {
     try {
       const { id: sessionId, title } = await getSessionByCode(loginCode);

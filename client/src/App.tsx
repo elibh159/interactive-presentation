@@ -5,6 +5,7 @@ import Home from "./components/home/Home";
 import Dashboard from "./components/dashboard";
 import Attendee from "./components/attendee/Attendee";
 import Presentation from "./components/presentation/Presentation";
+import Trading from "./components/trading";
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/attendee/:login_code" element={<Attendee />} />
             <Route path="/presentation/:login_code" element={<Presentation />} />
+            <Route path="/trading" element={<Trading />} />
           </Routes>
         </div>
       </BrowserRouter>
