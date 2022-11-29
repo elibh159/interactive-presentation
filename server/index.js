@@ -61,7 +61,6 @@ io.on("connection", (socket) => {
           price: randomPrice(),
           dateinfo: currentDate
         }];
-       //debugger;
       io.emit("lastingPrice", data);
     }, 3000);
 

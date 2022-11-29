@@ -1,18 +1,4 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
-// import { Data } from '../../Interfaces/tradingInterface';
-// const data = [
-//     {
-//         name: "dolor",
-//         price: 3400
-//     },
-//     {
-//         name: "euro",
-//         price: 3600
-//     },
-//     {
-//         name: "pound",
-//         price: 4000
-//     }];
 
 const RenderLineChart = ({chartInfo}) => {
     return (
