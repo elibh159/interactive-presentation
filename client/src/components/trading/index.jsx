@@ -8,46 +8,64 @@ let socket = io(endPoint);
 const Trading = () => {
     const [lastPrice, setLastPrice] = useState([]);
     const [isConnected, setIsConnected] = useState(false);
-    
+
     useEffect(() => {
         socket.on("connect", () => {
             setIsConnected(true);
             socket.emit("startTrading");
         });
+        socket.on("initialPrice", (data) => {
+            console.log(data);
+            setLastPrice([...data]);
+        });
 
         socket.on("lastingPrice", (data) => {
-            setLastPrice(lastPrice=>[...lastPrice.slice(-20), ...data]);
+            console.log(data);
+            setLastPrice(lastPrice => [...lastPrice.slice(-15), data]);
         });
 
         return () => {
             socket.on("disConnect", () => {
-            console.log("disconetct")
+                console.log("disconetct")
                 setIsConnected(false);
             });
+            socket.off("lastingPrice");
+            socket.off("initialPrice");
+            
         }
     }, []);
 
-    const PricesBox = lastPrice.map(({ name, price, dateinfo }, index) =>
+    const PricesBox = lastPrice.map(({ id, pound, euro, dollor, dateinfo }, index) =>
         <tr key={index}>
-            <th>{name} {index}</th>
-            <td> {price}</td>
+            <td> {id}</td>
+            <td> {dollor}</td>
+            <td> {euro}</td>
+            <td> {pound}</td>
             <td> {(new Date(dateinfo)).toLocaleTimeString()}</td>
         </tr>
-        );
+    );
 
 
     return (
         <div>
             {isConnected && <h2>connected!</h2 >}
-            
-            
+
             {lastPrice && <RenderLineChart chartInfo={lastPrice} />}
             <table>
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Dollor</td>
+                        <td>Euro</td>
+                        <td>Pound</td>
+                        <td>Date Time</td>
+                    </tr>
+                </thead>
                 <tbody>
                     {PricesBox}
                 </tbody>
             </table>
-            
+
         </div>
     );
 }

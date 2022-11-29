@@ -40,29 +40,44 @@ function getSessionId(socket) {
   return undefined;
 }
 const randomPrice = () => (Math.floor(Math.random() * 10000));
-io.on("connection", (socket) => {
+let id = 111;
+const createId = () => (id = id + 1);
+
+const initialData = () => {
+  let inital = [];
+  const currentDate = Date.now();
+  for (let index = 0; index < 20; index++) {
+    inital.push({
+      id: index,
+      dollor: randomPrice(),
+      euro: randomPrice(),
+      pound: randomPrice(),
+      dateinfo: currentDate,
+    });
+  }
+  //debugger;
+  return inital;
+}
+
+
+io.on("connection", async (socket) => {
+//debugger;
+const data= await initialData();
+  io.emit("initialPrice", data);
+
   socket.on("startTrading", () => {
     setInterval(() => {
       const currentDate = Date.now();
-
-      let data = [
-        {
-          name: "dolor",
-          price: randomPrice(),
-          dateinfo: currentDate,
-        },
-        {
-          name: "euro",
-          price: randomPrice(),
-          dateinfo: currentDate
-        },
-        {
-          name: "pound",
-          price: randomPrice(),
-          dateinfo: currentDate
-        }];
+      let data = {
+        id: createId(),
+        dollor: randomPrice(),
+        euro: randomPrice(),
+        pound: randomPrice(),
+        dateinfo: currentDate,
+      };
+      //   debugger;
       io.emit("lastingPrice", data);
-    }, 3000);
+    }, 4000);
 
   })
   socket.on("start", async ({ loginCode }) => {
